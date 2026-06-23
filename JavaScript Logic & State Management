@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Task Manager</h1>
+
+        <div class="input-section">
+            <input type="text" id="taskInput" placeholder="Enter a task">
+
+            <button id="addTaskBtn">
+                Add Task
+            </button>
+        </div>
+
+        <div class="filters">
+
+            <button data-filter="all">
+                All
+            </button>
+
+            <button data-filter="active">
+                Active
+            </button>
+
+            <button data-filter="completed">
+                Completed
+            </button>
+
+        </div>
+
+        <ul id="taskList"></ul>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial,sans-serif;
+    background:#f4f4f4;
+    padding:30px;
+}
+
+.container{
+    max-width:700px;
+    margin:auto;
+    background:white;
+    padding:25px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.input-section{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+input{
+    flex:1;
+    padding:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+
+.filters{
+    display:flex;
+    gap:10px;
+    margin-bottom:20px;
+}
+
+li{
+    list-style:none;
+    padding:15px;
+    margin-bottom:10px;
+    border:1px solid #ddd;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.completed{
+    text-decoration:line-through;
+    opacity:0.6;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+}
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+let currentFilter = "all";
+
+const taskInput = document.getElementById("taskInput");
+const addTaskBtn = document.getElementById("addTaskBtn");
+const taskList = document.getElementById("taskList");
+const filterButtons = document.querySelectorAll("[data-filter]");
+
+function saveTasks() {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+function createTask(taskName) {
+
+    const task = {
+        id: Date.now(),
+        name: taskName,
+        completed: false
+    };
+
+    tasks.push(task);
+
+    saveTasks();
+
+    renderTasks();
+}
+
+function renderTasks() {
+
+    taskList.innerHTML = "";
+
+    let filteredTasks = tasks;
+
+    if (currentFilter === "active") {
+        filteredTasks = tasks.filter(task => !task.completed);
+    }
+
+    if (currentFilter === "completed") {
+        filteredTasks = tasks.filter(task => task.completed);
+    }
+
+    filteredTasks.forEach(task => {
+
+        const li = document.createElement("li");
+
+        li.dataset.id = task.id;
+
+        if (task.completed) {
+            li.classList.add("completed");
+        }
+
+        li.innerHTML = `
+            <span>${task.name}</span>
+
+            <div class="actions">
+
+                <button class="complete-btn">
+                    ${task.completed ? "Undo" : "Complete"}
+                </button>
+
+                <button class="edit-btn">
+                    Edit
+                </button>
+
+                <button class="delete-btn">
+                    Delete
+                </button>
+
+            </div>
+        `;
+
+        taskList.appendChild(li);
+
+    });
+
+}
+
+addTaskBtn.addEventListener("click", () => {
+
+    const taskName = taskInput.value.trim();
+
+    if (taskName === "") {
+        alert("Please enter a task");
+        return;
+    }
+
+    createTask(taskName);
+
+    taskInput.value = "";
+
+});
+
+taskList.addEventListener("click", (event) => {
+
+    const clickedButton = event.target;
+
+    const taskItem = clickedButton.closest("li");
+
+    if (!taskItem) {
+        return;
+    }
+
+    const taskId = Number(taskItem.dataset.id);
+
+    const task = tasks.find(item => item.id === taskId);
+
+    if (!task) {
+        return;
+    }
+
+    if (clickedButton.classList.contains("delete-btn")) {
+
+        tasks = tasks.filter(item => item.id !== taskId);
+
+        saveTasks();
+
+        renderTasks();
+    }
+
+    if (clickedButton.classList.contains("complete-btn")) {
+
+        task.completed = !task.completed;
+
+        saveTasks();
+
+        renderTasks();
+    }
+
+    if (clickedButton.classList.contains("edit-btn")) {
+
+        const updatedTask = prompt(
+            "Update Task",
+            task.name
+        );
+
+        if (updatedTask && updatedTask.trim() !== "") {
+
+            task.name = updatedTask.trim();
+
+            saveTasks();
+
+            renderTasks();
+        }
+    }
+
+});
+
+filterButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        currentFilter = button.dataset.filter;
+
+        renderTasks();
+
+    });
+
+});
+
+renderTasks();
