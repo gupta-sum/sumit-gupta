@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Personal Portfolio Website of Akshit Sharma">
+    <meta name="keywords" content="Portfolio, Web Developer, Student, HTML5">
+    <meta name="author" content="Akshit Sharma">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Akshit Sharma | Portfolio</title>
+</head>
+
+<body>
+
+<header role="banner">
+    <h1>Akshit Sharma</h1>
+
+    <nav aria-label="Main Navigation">
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Me</a></li>
+            <li><a href="projects.html">Projects</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main id="main-content">
+
+    <section aria-labelledby="welcome-heading">
+        <h2 id="welcome-heading">Welcome</h2>
+
+        <article>
+            <p>
+                I am a Computer Science student passionate about
+                web development, cyber security and software development.
+            </p>
+        </article>
+    </section>
+
+    <section aria-labelledby="skills-heading">
+        <h2 id="skills-heading">Skills</h2>
+
+        <ul>
+            <li>HTML5</li>
+            <li>CSS3</li>
+            <li>JavaScript</li>
+            <li>Python</li>
+            <li>MySQL</li>
+        </ul>
+    </section>
+
+    <aside aria-label="Quick Information">
+        <h3>Quick Facts</h3>
+        <p>2nd Year Computer Science Student</p>
+        <p>Interested in Cyber Security</p>
+    </aside>
+
+</main>
+
+<footer role="contentinfo">
+    <p>&copy; 2026 Akshit Sharma. All Rights Reserved.</p>
+</footer>
+
+</body>
+</html>
