@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Real-Time Weather Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#f4f6f9;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.container{
+    width:90%;
+    max-width:650px;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,0.1);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.search-box{
+    display:flex;
+    gap:10px;
+}
+
+input{
+    flex:1;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    outline:none;
+}
+
+button{
+    padding:12px 20px;
+    border:none;
+    background:#007bff;
+    color:white;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0056b3;
+}
+
+#loading{
+    margin-top:15px;
+    color:#007bff;
+    font-weight:bold;
+}
+
+.hidden{
+    display:none;
+}
+
+#errorMessage{
+    color:red;
+    margin-top:15px;
+    font-weight:bold;
+}
+
+.card{
+    margin-top:20px;
+    background:#eef5ff;
+    padding:20px;
+    border-radius:10px;
+}
+
+.card h2{
+    margin-bottom:15px;
+}
+
+.card p{
+    margin:10px 0;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Real-Time Weather Dashboard</h1>
+
+    <div class="search-box">
+        <input
+            type="text"
+            id="cityInput"
+            placeholder="Enter City Name"
+        >
+        <button id="searchBtn">
+            Search
+        </button>
+    </div>
+
+    <div id="loading" class="hidden">
+        Loading Weather Data...
+    </div>
+
+    <div id="errorMessage"></div>
+
+    <div id="weatherCard"></div>
+
+</div>
+
+<script>
+
+const cityInput = document.getElementById("cityInput");
+const searchBtn = document.getElementById("searchBtn");
+const weatherCard = document.getElementById("weatherCard");
+const errorMessage = document.getElementById("errorMessage");
+const loading = document.getElementById("loading");
+
+async function fetchWeather(city){
+
+    try{
+
+        errorMessage.textContent = "";
+        weatherCard.innerHTML = "";
+        loading.classList.remove("hidden");
+
+        const locationResponse = await fetch(
+            `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
+        );
+
+        if(!locationResponse.ok){
+            throw new Error("Unable to connect to location service.");
+        }
+
+        const locationData = await locationResponse.json();
+
+        if(!locationData.results || locationData.results.length === 0){
+            throw new Error("City not found.");
+        }
+
+        const cityName = locationData.results[0].name;
+        const country = locationData.results[0].country;
+        const latitude = locationData.results[0].latitude;
+        const longitude = locationData.results[0].longitude;
+
+        const weatherResponse = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,wind_speed_10m`
+        );
+
+        if(!weatherResponse.ok){
+            throw new Error("Weather service unavailable.");
+        }
+
+        const weatherData = await weatherResponse.json();
+
+        displayWeather(cityName,country,weatherData);
+
+    }
+    catch(error){
+
+        errorMessage.textContent = error.message;
+
+    }
+    finally{
+
+        loading.classList.add("hidden");
+
+    }
+}
+
+function displayWeather(city,country,weatherData){
+
+    const current = weatherData.current;
+
+    weatherCard.innerHTML = `
+        <div class="card">
+
+            <h2>${city}, ${country}</h2>
+
+            <p><strong>Temperature:</strong> ${current.temperature_2m} °C</p>
+
+            <p><strong>Humidity:</strong> ${current.relative_humidity_2m}%</p>
+
+            <p><strong>Wind Speed:</strong> ${current.wind_speed_10m} km/h</p>
+
+            <p><strong>Last Updated:</strong> ${current.time}</p>
+
+        </div>
+    `;
+}
+
+searchBtn.addEventListener("click", () => {
+
+    const city = cityInput.value.trim();
+
+    if(city === ""){
+        errorMessage.textContent = "Please enter a city name.";
+        return;
+    }
+
+    fetchWeather(city);
+});
+
+cityInput.addEventListener("keypress", (event) => {
+
+    if(event.key === "Enter"){
+
+        const city = cityInput.value.trim();
+
+        if(city !== ""){
+            fetchWeather(city);
+        }
+    }
+});
+
+</script>
+
+</body>
+</html>
