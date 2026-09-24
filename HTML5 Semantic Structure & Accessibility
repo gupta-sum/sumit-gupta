@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="description" content="Personal Portfolio Website of Akshit Sharma">
     <meta name="keywords" content="Portfolio, Web Developer, Student, HTML5">
-    <meta name="author" content="Akshit Sharma">
+    <meta name="author" content="SUMIT">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Akshit Sharma | Portfolio</title>
+    <title>SUMIT | Portfolio</title>
 </head>
 
 <body>
 
 <header role="banner">
-    <h1>Akshit Sharma</h1>
+    <h1>SUMIT</h1>
 
     <nav aria-label="Main Navigation">
         <ul>
@@ -59,7 +59,7 @@
 </main>
 
 <footer role="contentinfo">
-    <p>&copy; 2026 Akshit Sharma. All Rights Reserved.</p>
+    <p>&copy; 2026 SUMIT. All Rights Reserved.</p>
 </footer>
 
 </body>
