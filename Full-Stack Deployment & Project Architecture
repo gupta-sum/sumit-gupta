@@ -1,287 +1,683 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>E-Commerce Product Catalog</title>
+    <title>E-Commerce Product Catalog</title>
 
-<style>
+    <style>
+        /* =========================
+           GLOBAL STYLES
+        ========================== */
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-body{
-background:#f4f4f4;
-}
+        html {
+            scroll-behavior: smooth;
+        }
 
-header{
-background:#1e293b;
-color:white;
-padding:20px;
-text-align:center;
-}
+        body {
+            background: #f4f4f4;
+            color: #222;
+        }
 
-nav{
-margin-top:10px;
-}
+        /* =========================
+           HEADER
+        ========================== */
 
-nav a{
-color:white;
-text-decoration:none;
-margin:0 15px;
-font-weight:bold;
-}
+        header {
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
-.container{
-width:90%;
-max-width:1200px;
-margin:auto;
-padding:20px;
-}
+        header h1 {
+            margin-bottom: 10px;
+        }
 
-.hero{
-text-align:center;
-padding:40px;
-background:white;
-border-radius:10px;
-margin-bottom:20px;
-}
+        nav {
+            margin-top: 10px;
+        }
 
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
 
-.card{
-background:white;
-padding:15px;
-border-radius:10px;
-box-shadow:0 2px 8px rgba(0,0,0,0.1);
-}
+        nav a:hover {
+            color: #60a5fa;
+        }
 
-.card img{
-width:100%;
-height:220px;
-object-fit:cover;
-border-radius:10px;
-}
+        /* =========================
+           MAIN CONTAINER
+        ========================== */
 
-.card h3{
-margin:10px 0;
-}
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+            min-height: 70vh;
+        }
 
-.card p{
-margin:8px 0;
-}
+        /* =========================
+           HOME PAGE
+        ========================== */
 
-button{
-background:#2563eb;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:6px;
-cursor:pointer;
-}
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
 
-button:hover{
-background:#1d4ed8;
-}
+        .hero h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
 
-.details{
-background:white;
-padding:20px;
-border-radius:10px;
-}
+        .hero p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
 
-.details img{
-width:300px;
-max-width:100%;
-display:block;
-margin-bottom:15px;
-}
+        .hero button {
+            margin-top: 10px;
+        }
 
-footer{
-margin-top:30px;
-background:#1e293b;
-color:white;
-text-align:center;
-padding:15px;
-}
+        /* =========================
+           PRODUCTS
+        ========================== */
 
-</style>
+        .page-title {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(250px, 1fr)
+            );
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .card h3 {
+            margin: 12px 0;
+            font-size: 20px;
+        }
+
+        .card p {
+            margin: 8px 0;
+            color: #555;
+        }
+
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        /* =========================
+           BUTTONS
+        ========================== */
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-button {
+            background: #64748b;
+        }
+
+        .back-button:hover {
+            background: #475569;
+        }
+
+        /* =========================
+           PRODUCT DETAILS
+        ========================== */
+
+        .details {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .details img {
+            width: 300px;
+            max-width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+            margin-bottom: 20px;
+            border-radius: 10px;
+        }
+
+        .details h2 {
+            margin-bottom: 15px;
+        }
+
+        .details p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .details .detail-price {
+            font-size: 22px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        /* =========================
+           NOT FOUND PAGE
+        ========================== */
+
+        .not-found {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        .not-found h2 {
+            margin-bottom: 15px;
+        }
+
+        /* =========================
+           FOOTER
+        ========================== */
+
+        footer {
+            margin-top: 30px;
+            background: #1e293b;
+            color: white;
+            text-align: center;
+            padding: 15px;
+        }
+
+        /* =========================
+           MOBILE RESPONSIVE
+        ========================== */
+
+        @media (max-width: 600px) {
+
+            header h1 {
+                font-size: 24px;
+            }
+
+            nav a {
+                margin: 0 7px;
+                font-size: 14px;
+            }
+
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+
+            .hero {
+                padding: 40px 15px;
+            }
+
+            .hero h2 {
+                font-size: 25px;
+            }
+
+            .products {
+                grid-template-columns: 1fr;
+            }
+
+            .card img {
+                height: 250px;
+            }
+
+            .details {
+                padding: 20px;
+            }
+
+            .details img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
 </head>
+
 
 <body>
 
-<header>
+    <!-- =========================
+         HEADER
+    ========================== -->
 
-<h1>E-Commerce Product Catalog</h1>
+    <header>
 
-<nav>
-<a href="#home">Home</a>
-<a href="#products">Products</a>
-</nav>
+        <h1>E-Commerce Product Catalog</h1>
 
-</header>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#products">Products</a>
+        </nav>
 
-<div id="app" class="container"></div>
+    </header>
 
-<footer>
-Capstone Project - Full Stack Deployment & Project Architecture
-</footer>
 
-<script>
+    <!-- =========================
+         MAIN APPLICATION
+    ========================== -->
 
-const products = [
+    <main id="app" class="container"></main>
 
-{
-id:1,
-name:"Wireless Headphones",
-price:2999,
-category:"Electronics",
-image:"https://picsum.photos/300?random=1",
-description:"Premium quality wireless headphones."
-},
 
-{
-id:2,
-name:"Smart Watch",
-price:4999,
-category:"Electronics",
-image:"https://picsum.photos/300?random=2",
-description:"Advanced smartwatch with health tracking."
-},
+    <!-- =========================
+         FOOTER
+    ========================== -->
 
-{
-id:3,
-name:"Running Shoes",
-price:2499,
-category:"Fashion",
-image:"https://picsum.photos/300?random=3",
-description:"Comfortable sports running shoes."
-},
+    <footer>
+        Capstone Project - Full Stack Deployment & Project Architecture
+    </footer>
 
-{
-id:4,
-name:"Backpack",
-price:1499,
-category:"Accessories",
-image:"https://picsum.photos/300?random=4",
-description:"Travel friendly backpack."
-}
 
-];
+    <script>
 
-function homePage(){
+        /* =====================================
+           PRODUCT DATA
+        ====================================== */
 
-return `
-<div class="hero">
-<h2>Welcome to Our Online Store</h2>
-<p>Explore premium quality products.</p>
-</div>
-`;
+        const products = [
 
-}
+            {
+                id: 1,
+                name: "Wireless Headphones",
+                price: 2999,
+                category: "Electronics",
+                image: "https://picsum.photos/300/220?random=1",
+                description:
+                    "Premium quality wireless headphones with clear sound and comfortable design."
+            },
 
-function productsPage(){
+            {
+                id: 2,
+                name: "Smart Watch",
+                price: 4999,
+                category: "Electronics",
+                image: "https://picsum.photos/300/220?random=2",
+                description:
+                    "Advanced smartwatch with health tracking, notifications and fitness features."
+            },
 
-let cards = "";
+            {
+                id: 3,
+                name: "Running Shoes",
+                price: 2499,
+                category: "Fashion",
+                image: "https://picsum.photos/300/220?random=3",
+                description:
+                    "Comfortable sports running shoes designed for everyday workouts and running."
+            },
 
-products.forEach(product=>{
+            {
+                id: 4,
+                name: "Backpack",
+                price: 1499,
+                category: "Accessories",
+                image: "https://picsum.photos/300/220?random=4",
+                description:
+                    "Travel-friendly backpack with enough storage space for books, laptops and accessories."
+            }
 
-cards += `
-<div class="card">
+        ];
 
-<img src="${product.image}" loading="lazy">
 
-<h3>${product.name}</h3>
+        /* =====================================
+           GET APP ELEMENT
+        ====================================== */
 
-<p>Category: ${product.category}</p>
+        const app = document.getElementById("app");
 
-<p>₹${product.price}</p>
 
-<button onclick="viewProduct(${product.id})">
-View Details
-</button>
+        /* =====================================
+           HOME PAGE
+        ====================================== */
 
-</div>
-`;
+        function homePage() {
 
-});
+            return `
 
-return `
-<h2 style="margin-bottom:20px;">
-Product Catalog
-</h2>
+                <section class="hero">
 
-<div class="products">
-${cards}
-</div>
-`;
+                    <h2>
+                        Welcome to Our Online Store
+                    </h2>
 
-}
+                    <p>
+                        Explore premium quality products at affordable prices.
+                    </p>
 
-function productDetails(id){
+                    <button onclick="location.hash='products'">
+                        Explore Products
+                    </button>
 
-const product = products.find(item => item.id === id);
+                </section>
 
-return `
-<div class="details">
+            `;
 
-<img src="${product.image}">
+        }
 
-<h2>${product.name}</h2>
 
-<p><strong>Category:</strong>
-${product.category}</p>
+        /* =====================================
+           PRODUCTS PAGE
+        ====================================== */
 
-<p><strong>Price:</strong>
-₹${product.price}</p>
+        function productsPage() {
 
-<p>${product.description}</p>
+            let cards = "";
 
-<br>
+            products.forEach(function(product) {
 
-<button onclick="location.hash='products'">
-Back
-</button>
+                cards += `
 
-</div>
-`;
+                    <div class="card">
 
-}
+                        <img
+                            src="${product.image}"
+                            alt="${product.name}"
+                            loading="lazy"
+                        >
 
-function router(){
+                        <h3>
+                            ${product.name}
+                        </h3>
 
-const route = location.hash || "#home";
+                        <p>
+                            <strong>Category:</strong>
+                            ${product.category}
+                        </p>
 
-if(route === "#home"){
-app.innerHTML = homePage();
-}
+                        <p class="price">
+                            ₹${product.price}
+                        </p>
 
-else if(route === "#products"){
-app.innerHTML = productsPage();
-}
+                        <button
+                            onclick="viewProduct(${product.id})"
+                        >
+                            View Details
+                        </button>
 
-}
+                    </div>
 
-function viewProduct(id){
+                `;
 
-app.innerHTML = productDetails(id);
+            });
 
-}
 
-window.addEventListener("hashchange",router);
+            return `
 
-window.addEventListener("load",router);
+                <section>
 
-</script>
+                    <h2 class="page-title">
+                        Product Catalog
+                    </h2>
+
+                    <div class="products">
+
+                        ${cards}
+
+                    </div>
+
+                </section>
+
+            `;
+
+        }
+
+
+        /* =====================================
+           PRODUCT DETAILS PAGE
+        ====================================== */
+
+        function productDetails(id) {
+
+            const product = products.find(
+                function(item) {
+                    return item.id === id;
+                }
+            );
+
+
+            /* If product does not exist */
+
+            if (!product) {
+
+                return `
+
+                    <div class="not-found">
+
+                        <h2>
+                            Product Not Found
+                        </h2>
+
+                        <p>
+                            The product you are looking for does not exist.
+                        </p>
+
+                        <br>
+
+                        <button
+                            onclick="location.hash='products'"
+                        >
+                            Back to Products
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+
+
+            return `
+
+                <section class="details">
+
+                    <img
+                        src="${product.image}"
+                        alt="${product.name}"
+                    >
+
+                    <h2>
+                        ${product.name}
+                    </h2>
+
+                    <p>
+                        <strong>Category:</strong>
+                        ${product.category}
+                    </p>
+
+                    <p class="detail-price">
+                        ₹${product.price}
+                    </p>
+
+                    <p>
+                        ${product.description}
+                    </p>
+
+                    <br>
+
+                    <button
+                        class="back-button"
+                        onclick="location.hash='products'"
+                    >
+                        ← Back to Products
+                    </button>
+
+                </section>
+
+            `;
+
+        }
+
+
+        /* =====================================
+           VIEW PRODUCT
+        ====================================== */
+
+        function viewProduct(id) {
+
+            app.innerHTML = productDetails(id);
+
+            /*
+                Change URL hash so that
+                browser history also works.
+            */
+
+            history.pushState(
+                null,
+                "",
+                "#product-" + id
+            );
+
+        }
+
+
+        /* =====================================
+           ROUTER
+        ====================================== */
+
+        function router() {
+
+            const route = location.hash || "#home";
+
+
+            /* HOME */
+
+            if (route === "#home") {
+
+                app.innerHTML = homePage();
+
+            }
+
+
+            /* PRODUCTS */
+
+            else if (route === "#products") {
+
+                app.innerHTML = productsPage();
+
+            }
+
+
+            /* PRODUCT DETAILS */
+
+            else if (route.startsWith("#product-")) {
+
+                const id = Number(
+                    route.replace("#product-", "")
+                );
+
+                app.innerHTML = productDetails(id);
+
+            }
+
+
+            /* UNKNOWN ROUTE */
+
+            else {
+
+                app.innerHTML = `
+
+                    <div class="not-found">
+
+                        <h2>
+                            Page Not Found
+                        </h2>
+
+                        <p>
+                            The page you are looking for does not exist.
+                        </p>
+
+                        <br>
+
+                        <button
+                            onclick="location.hash='home'"
+                        >
+                            Go Home
+                        </button>
+
+                    </div>
+
+                `;
+
+            }
+
+        }
+
+
+        /* =====================================
+           BROWSER EVENTS
+        ====================================== */
+
+        window.addEventListener(
+            "hashchange",
+            router
+        );
+
+
+        window.addEventListener(
+            "load",
+            router
+        );
+
+    </script>
 
 </body>
+
 </html>
